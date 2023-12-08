@@ -50,12 +50,19 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function postCreateBundle(Event $event): void
     {
-        $name = $this->io->ask('Bundle name: ', 'acme/acme-bundle');
-        $description = $this->io->ask('Bundle description: ', 'My awesome AcmeBundle');
+        $name = $this->io->ask('Composer package name (e.g. acme/acme-bundle): ', 'acme/acme-bundle');
+        $description = $this->io->ask('Composer package description: ', 'Acme bundle description');
 
         $this->configureComposerJson($name, $description);
         $this->removePlugin();
         $this->removeSkeletonFiles();
+
+        $message = <<<EOT
+<bg=green;fg=white>                                            </>
+<bg=green;fg=white> The bundle has been successfully created!  </>
+<bg=green;fg=white>                                            </>
+EOT;
+        $this->io->write($message);
     }
 
     private function removeSkeletonFiles(): void
