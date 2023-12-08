@@ -9,9 +9,7 @@ use Composer\EventDispatcher\Event;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Factory;
 use Composer\IO\IOInterface;
-use Composer\Json\JsonFile;
 use Composer\Json\JsonManipulator;
-use Composer\Package\Locker;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -52,9 +50,12 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function postCreateBundle(Event $event): void
     {
+        $name = $this->io->ask('Bundle name: ', 'acme/acme-bundle');
+        $description = $this->io->ask('Bundle description: ', 'My awesome AcmeBundle');
+
+        $this->configureComposerJson($name, $description);
+        $this->removePlugin();
         $this->removeSkeletonFiles();
-        $this->configureComposerJson();
-        $this->removeBundleFlexPlugin();
     }
 
     private function removeSkeletonFiles(): void
@@ -63,29 +64,18 @@ class Flex implements PluginInterface, EventSubscriberInterface
         @unlink('README.md');
     }
 
-    private function configureComposerJson(): void
+    private function configureComposerJson(string $name, string $description): void
     {
         $file = Factory::getComposerFile();
 
         $manipulator = new JsonManipulator(file_get_contents($file));
-        $manipulator->addProperty('name', 'acme/acme-bundle');
-        $manipulator->addProperty('description', 'Acme bundle description');
+        $manipulator->addProperty('name', $name);
+        $manipulator->addProperty('description', $description);
 
         file_put_contents($file, $manipulator->getContents());
     }
 
-    private function updateComposerLock(): void
-    {
-        $lock = substr(Factory::getComposerFile(), 0, -4).'lock';
-        $composerJson = file_get_contents(Factory::getComposerFile());
-        $lockFile = new JsonFile($lock, null, $this->io);
-        $locker = new Locker($this->io, $lockFile, $this->composer->getInstallationManager(), $composerJson);
-        $lockData = $locker->getLockData();
-        $lockData['content-hash'] = Locker::getContentHash($composerJson);
-        $lockFile->write($lockData);
-    }
-
-    private function removeBundleFlexPlugin(): void
+    private function removePlugin(): void
     {
         $command = new RemoveCommand();
         $command->setApplication(new Application());
