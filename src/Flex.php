@@ -50,7 +50,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
     public function postCreateBundle(Event $event): void
     {
         $this->removeSkeletonFiles();
-        //$this->configureComposerJson();
+        $this->configureComposerJson();
         $this->removeBundleFlexPlugin();
     }
 
