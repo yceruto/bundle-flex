@@ -89,7 +89,11 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $localRepo = $this->composer->getRepositoryManager()->getLocalRepository();
         foreach ($localRepo->getCanonicalPackages() as $package) {
             if ('yceruto/bundle-flex' === $package->getName()) {
-                $this->composer->getInstallationManager()->uninstall($localRepo, new UninstallOperation($package));
+                $this->composer->getInstallationManager()->execute(
+                    $localRepo,
+                    [new UninstallOperation($package)],
+                    $localRepo->getDevMode() ?? true,
+                );
                 break;
             }
         }
