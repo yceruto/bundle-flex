@@ -50,6 +50,8 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function postCreateBundle(Event $event): void
     {
+        var_dump($event);
+
         $this->io->write(' ');
         $name = $this->io->ask('Composer package name (e.g. acme/acme-bundle): ', 'acme/acme-bundle');
         $description = $this->io->ask('Composer package description: ', 'Acme bundle description');
@@ -60,9 +62,9 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
         $message = <<<EOT
 
-<bg=green;fg=white>                                            </>
-<bg=green;fg=white> The bundle has been successfully created!  </>
-<bg=green;fg=white>                                            </>
+<bg=green;fg=white>                                               </>
+<bg=green;fg=white> ✨ The bundle has been successfully created!  </>
+<bg=green;fg=white>                                               </>
 
 EOT;
         $this->io->write($message);
