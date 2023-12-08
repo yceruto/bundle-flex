@@ -2,15 +2,12 @@
 
 namespace Yceruto\BundleFlex;
 
-use Composer\Command\GlobalCommand;
 use Composer\Composer;
+use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\EventDispatcher\Event;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Factory;
-use Composer\Installer;
-use Composer\Installer\SuggestedPackagesReporter;
 use Composer\IO\IOInterface;
-use Composer\IO\NullIO;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonManipulator;
 use Composer\Package\Locker;
@@ -22,7 +19,6 @@ class Flex implements PluginInterface, EventSubscriberInterface
     private static bool $activated = true;
     private Composer $composer;
     private IOInterface $io;
-    private Installer $installer;
 
     public static function getSubscribedEvents(): array
     {
@@ -31,7 +27,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
         }
 
         return [
-            ScriptEvents::POST_CREATE_PROJECT_CMD => 'configureBundle',
+            ScriptEvents::POST_CREATE_PROJECT_CMD => 'postCreateBundle',
         ];
     }
 
@@ -39,13 +35,6 @@ class Flex implements PluginInterface, EventSubscriberInterface
     {
         $this->composer = $composer;
         $this->io = $io;
-
-        $backtrace = debug_backtrace();
-        foreach ($backtrace as $trace) {
-            if (isset($trace['object']) && $trace['object'] instanceof Installer) {
-                $this->installer = $trace['object']->setSuggestedPackagesReporter(new SuggestedPackagesReporter(new NullIO()));
-            }
-        }
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
@@ -58,11 +47,11 @@ class Flex implements PluginInterface, EventSubscriberInterface
         // no-op
     }
 
-    public function configureBundle(Event $event): void
+    public function postCreateBundle(Event $event): void
     {
-        var_dump($event->getArguments());
         $this->removeSkeletonFiles();
         $this->configureComposerJson();
+        //$this->removeBundleFlexPlugin();
     }
 
     private function removeSkeletonFiles(): void
@@ -74,20 +63,14 @@ class Flex implements PluginInterface, EventSubscriberInterface
     private function configureComposerJson(): void
     {
         $file = Factory::getComposerFile();
-        $contents = file_get_contents($file);
-        JsonFile::parseJson($contents);
 
-        $manipulator = new JsonManipulator($contents);
+        $manipulator = new JsonManipulator(file_get_contents($file));
         $manipulator->addProperty('name', 'acme/acme-bundle');
         $manipulator->addProperty('description', 'Acme bundle description');
         $manipulator->removeSubNode('require', 'yceruto/bundle-flex');
-        file_put_contents($file, $manipulator->getContents());
-
-        $this->reinstall();
-
         $manipulator->removeSubNode('config', 'allow-plugins');
+
         file_put_contents($file, $manipulator->getContents());
-        $this->updateComposerLock();
     }
 
     private function updateComposerLock(): void
@@ -101,26 +84,14 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $lockFile->write($lockData);
     }
 
-    private function reinstall(): void
+    private function removeBundleFlexPlugin(): void
     {
-        $composer = Factory::create($this->io, null, false, true);
-
-        $installer = clone $this->installer;
-        $installer->__construct(
-            $this->io,
-            $composer->getConfig(),
-            $composer->getPackage(),
-            $composer->getDownloadManager(),
-            $composer->getRepositoryManager(),
-            $composer->getLocker(),
-            $composer->getInstallationManager(),
-            $composer->getEventDispatcher(),
-            $composer->getAutoloadGenerator()
-        );
-        if (method_exists($installer, 'setPlatformRequirementFilter')) {
-            $installer->setPlatformRequirementFilter(((array) $this->installer)["\0*\0platformRequirementFilter"]);
+        $localRepo = $this->composer->getRepositoryManager()->getLocalRepository();
+        foreach ($localRepo->getCanonicalPackages() as $package) {
+            if ('yceruto/bundle-flex' === $package->getName()) {
+                $this->composer->getInstallationManager()->uninstall($localRepo, new UninstallOperation($package));
+                break;
+            }
         }
-
-        $installer->run();
     }
 }
