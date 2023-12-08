@@ -21,5 +21,8 @@
             "email": "yonelceruto@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "class": "Yceruto\\BundleFlex\\Flex"
+    }
 }

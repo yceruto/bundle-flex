@@ -9,7 +9,7 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 
-class BundleFlex implements PluginInterface, EventSubscriberInterface
+class Flex implements PluginInterface, EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
