@@ -9,13 +9,22 @@ use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonManipulator;
+use Composer\Package\Locker;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 
 class Flex implements PluginInterface, EventSubscriberInterface
 {
+    private static bool $activated = true;
+    private Composer $composer;
+    private IOInterface $io;
+
     public static function getSubscribedEvents(): array
     {
+        if (!self::$activated) {
+            return [];
+        }
+
         return [
             ScriptEvents::POST_CREATE_PROJECT_CMD => 'configureBundle',
         ];
@@ -23,12 +32,13 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function activate(Composer $composer, IOInterface $io): void
     {
-        // TODO: Implement activate() method.
+        $this->composer = $composer;
+        $this->io = $io;
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
     {
-        // no-op
+        self::$activated = false;
     }
 
     public function uninstall(Composer $composer, IOInterface $io): void
@@ -38,11 +48,14 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function configureBundle(Event $event): void
     {
-        // Remove files that do not apply to the user bundle
+        $this->removeSkeletonFiles();
+        $this->configureComposerJson();
+    }
+
+    private function removeSkeletonFiles(): void
+    {
         @unlink('LICENSE');
         @unlink('README.md');
-
-        $this->configureComposerJson();
     }
 
     private function configureComposerJson(): void
@@ -55,5 +68,18 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $manipulator->addProperty('name', 'acme/acme-bundle');
         $manipulator->addProperty('description', 'Acme bundle description');
         file_put_contents($file, $manipulator->getContents());
+
+        $this->updateComposerLock();
+    }
+
+    private function updateComposerLock(): void
+    {
+        $lock = substr(Factory::getComposerFile(), 0, -4).'lock';
+        $composerJson = file_get_contents(Factory::getComposerFile());
+        $lockFile = new JsonFile($lock, null, $this->io);
+        $locker = new Locker($this->io, $lockFile, $this->composer->getInstallationManager(), $composerJson);
+        $lockData = $locker->getLockData();
+        $lockData['content-hash'] = Locker::getContentHash($composerJson);
+        $lockFile->write($lockData);
     }
 }
