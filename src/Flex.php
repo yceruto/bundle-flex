@@ -81,11 +81,13 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $manipulator->addProperty('name', 'acme/acme-bundle');
         $manipulator->addProperty('description', 'Acme bundle description');
         $manipulator->removeSubNode('require', 'yceruto/bundle-flex');
-        $manipulator->removeSubNode('config', 'allow-plugins');
         file_put_contents($file, $manipulator->getContents());
 
-        //$this->updateComposerLock();
         $this->reinstall();
+
+        $manipulator->removeSubNode('config', 'allow-plugins');
+        file_put_contents($file, $manipulator->getContents());
+        $this->updateComposerLock();
     }
 
     private function updateComposerLock(): void
