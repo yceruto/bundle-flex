@@ -4,7 +4,7 @@ namespace Yceruto\BundleFlex;
 
 use Composer\Command\RemoveCommand;
 use Composer\Composer;
-use Composer\DependencyResolver\Operation\UninstallOperation;
+use Composer\Console\Application;
 use Composer\EventDispatcher\Event;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Factory;
@@ -90,6 +90,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
     private function removeBundleFlexPlugin(): void
     {
         $command = new RemoveCommand();
+        $command->setApplication(new Application());
         $command->setComposer($this->composer);
         $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex']]), new NullOutput());
     }
