@@ -2,6 +2,7 @@
 
 namespace Yceruto\BundleFlex;
 
+use Composer\Command\RemoveCommand;
 use Composer\Composer;
 use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\EventDispatcher\Event;
@@ -13,6 +14,8 @@ use Composer\Json\JsonManipulator;
 use Composer\Package\Locker;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 
 class Flex implements PluginInterface, EventSubscriberInterface
 {
@@ -50,7 +53,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
     public function postCreateBundle(Event $event): void
     {
         $this->removeSkeletonFiles();
-        $this->configureComposerJson();
+        //$this->configureComposerJson();
         $this->removeBundleFlexPlugin();
     }
 
@@ -86,16 +89,8 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     private function removeBundleFlexPlugin(): void
     {
-        $localRepo = $this->composer->getRepositoryManager()->getLocalRepository();
-        foreach ($localRepo->getCanonicalPackages() as $package) {
-            if ('yceruto/bundle-flex' === $package->getName()) {
-                $this->composer->getInstallationManager()->execute(
-                    $localRepo,
-                    [new UninstallOperation($package)],
-                    $localRepo->getDevMode() ?? true,
-                );
-                break;
-            }
-        }
+        $command = new RemoveCommand();
+        $command->setComposer($this->composer);
+        $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex']]), new NullOutput());
     }
 }
