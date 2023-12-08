@@ -56,12 +56,14 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     private function removeSkeletonFiles(): void
     {
+        $this->io->write('<info>Removing skeleton files...</info>');
         @unlink('LICENSE');
         @unlink('README.md');
     }
 
     private function configureComposerJson(): void
     {
+        $this->io->write('<info>Configuring composer.json...</info>');
         $file = Factory::getComposerFile();
 
         $manipulator = new JsonManipulator(file_get_contents($file));
