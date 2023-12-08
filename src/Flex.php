@@ -50,7 +50,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function postCreateBundle(Event $event): void
     {
-        var_dump($event);
+        var_dump($event->getArguments(), $event->getFlags());
 
         $this->io->write(' ');
         $name = $this->io->ask('Composer package name (e.g. acme/acme-bundle): ', 'acme/acme-bundle');
