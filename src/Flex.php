@@ -7,12 +7,11 @@ use Composer\Composer;
 use Composer\Console\Application;
 use Composer\EventDispatcher\Event;
 use Composer\EventDispatcher\EventSubscriberInterface;
-use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use Yceruto\BundleFlex\Maker\FlexMaker;
 
 class Flex implements PluginInterface, EventSubscriberInterface
@@ -58,7 +57,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $command = new RemoveCommand();
         $command->setApplication(new Application());
         $command->setComposer($this->composer);
-        $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex']]), new ConsoleOutput());
+        $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex']]), new NullOutput());
     }
 
     private function removeSkeletonFiles(): void
