@@ -24,6 +24,6 @@
     ],
     "minimum-stability": "dev",
     "extra": {
-        "class": "Yceruto\\BundleFlex\\FlexPlugin"
+        "class": "Yceruto\\BundleFlex\\Flex"
     }
 }
