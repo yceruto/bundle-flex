@@ -71,9 +71,9 @@ class Flex implements PluginInterface, EventSubscriberInterface
     {
         $message = <<<EOT
 
-<bg=green;fg=white>                                               </>
+<bg=green;fg=white>                                                </>
 <bg=green;fg=white> ✨ Your bundle has been successfully created!  </>
-<bg=green;fg=white>                                               </>
+<bg=green;fg=white>                                                </>
 
 EOT;
         $this->io->write($message);
