@@ -9,38 +9,35 @@ use Composer\EventDispatcher\Event;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Factory;
 use Composer\IO\IOInterface;
-use Composer\Json\JsonManipulator;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Yceruto\BundleFlex\Maker\FlexMaker;
 
 class Flex implements PluginInterface, EventSubscriberInterface
 {
-    private static bool $activated = true;
+    private FlexMaker $maker;
     private Composer $composer;
     private IOInterface $io;
 
     public static function getSubscribedEvents(): array
     {
-        if (!self::$activated) {
-            return [];
-        }
-
         return [
-            ScriptEvents::POST_CREATE_PROJECT_CMD => 'postCreateBundle',
+            ScriptEvents::POST_CREATE_PROJECT_CMD => 'onPostCreateProject',
         ];
     }
 
     public function activate(Composer $composer, IOInterface $io): void
     {
+        $this->maker = new FlexMaker($io);
         $this->composer = $composer;
         $this->io = $io;
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
     {
-        self::$activated = false;
+        // no-op
     }
 
     public function uninstall(Composer $composer, IOInterface $io): void
@@ -48,26 +45,20 @@ class Flex implements PluginInterface, EventSubscriberInterface
         // no-op
     }
 
-    public function postCreateBundle(Event $event): void
+    public function onPostCreateProject(Event $event): void
     {
-        var_dump($event->getArguments(), $event->getFlags());
-
-        $this->io->write(' ');
-        $name = $this->io->ask('Composer package name (e.g. acme/acme-bundle): ', 'acme/acme-bundle');
-        $description = $this->io->ask('Composer package description: ', 'Acme bundle description');
-
-        $this->configureComposerJson($name, $description);
+        $this->maker->make();
         $this->removePlugin();
         $this->removeSkeletonFiles();
+        $this->writeSuccessMessage();
+    }
 
-        $message = <<<EOT
-
-<bg=green;fg=white>                                               </>
-<bg=green;fg=white> ✨ The bundle has been successfully created!  </>
-<bg=green;fg=white>                                               </>
-
-EOT;
-        $this->io->write($message);
+    private function removePlugin(): void
+    {
+        $command = new RemoveCommand();
+        $command->setApplication(new Application());
+        $command->setComposer($this->composer);
+        $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex']]), new ConsoleOutput());
     }
 
     private function removeSkeletonFiles(): void
@@ -76,22 +67,15 @@ EOT;
         @unlink('README.md');
     }
 
-    private function configureComposerJson(string $name, string $description): void
+    private function writeSuccessMessage(): void
     {
-        $file = Factory::getComposerFile();
+        $message = <<<EOT
 
-        $manipulator = new JsonManipulator(file_get_contents($file));
-        $manipulator->addProperty('name', $name);
-        $manipulator->addProperty('description', $description);
+<bg=green;fg=white>                                               </>
+<bg=green;fg=white> ✨ Your bundle has been successfully created!  </>
+<bg=green;fg=white>                                               </>
 
-        file_put_contents($file, $manipulator->getContents());
-    }
-
-    private function removePlugin(): void
-    {
-        $command = new RemoveCommand();
-        $command->setApplication(new Application());
-        $command->setComposer($this->composer);
-        $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex']]), new NullOutput());
+EOT;
+        $this->io->write($message);
     }
 }

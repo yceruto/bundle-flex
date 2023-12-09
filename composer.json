@@ -3,7 +3,8 @@
     "description": "Composer plugin for Symfony bundles",
     "type": "composer-plugin",
     "require": {
-        "composer-plugin-api": "^2.3"
+        "composer-plugin-api": "^2.3",
+        "nikic/php-parser": "^5.0"
     },
     "require-dev": {
         "php": ">=8.0",
@@ -23,6 +24,6 @@
     ],
     "minimum-stability": "dev",
     "extra": {
-        "class": "Yceruto\\BundleFlex\\Flex"
+        "class": "FlexPlugin"
     }
 }
