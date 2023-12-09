@@ -9,7 +9,7 @@ class Inflector
      */
     public static function classify(string $word): string
     {
-        return str_replace([' ', '_', '-'], '', ucwords($word, ' _-'));
+        return str_replace([' ', '_', '-'], '', ucwords($word, ' _-/'));
     }
 
     /**

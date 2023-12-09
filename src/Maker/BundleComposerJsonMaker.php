@@ -15,8 +15,8 @@ class BundleComposerJsonMaker
         $manipulator = new JsonManipulator(file_get_contents($file));
         $manipulator->addProperty('name', $name);
         $manipulator->addProperty('description', $description);
-        $manipulator->addSubNode('autoload.psr-4', Inflector::namespacefy($name).'\\', 'src/');
-        $manipulator->addSubNode('autoload-dev.psr-4', Inflector::namespacefy($name).'\\Tests\\', 'tests/');
+        $manipulator->addSubNode('autoload', 'psr-4', [Inflector::namespacefy($name).'\\' => 'src/']);
+        $manipulator->addSubNode('autoload-dev', 'psr-4', [Inflector::namespacefy($name).'\\Tests\\' => 'tests/']);
 
         file_put_contents($file, $manipulator->getContents());
     }

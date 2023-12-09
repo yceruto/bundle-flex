@@ -24,7 +24,7 @@ class FlexMaker
         $this->io->write(' ');
         $name = $this->io->ask('Composer package name (e.g. acme/acme-bundle): ', 'acme/acme-bundle');
         $description = $this->io->ask('Composer package description: ', 'Acme bundle description');
-        $hasDefinition = $this->io->askConfirmation('Will the bundle contain a config definition?');
+        $hasDefinition = $this->io->askConfirmation('Will the bundle contain a config definition? (y,n): ');
 
         $this->composerJsonMaker->make($name, $description);
         $this->bundleMaker->make($name, $hasDefinition);
