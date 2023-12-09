@@ -7,7 +7,7 @@
         "nikic/php-parser": "^5.0"
     },
     "require-dev": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "composer/composer": "^2.7"
     },
     "license": "MIT",
@@ -24,6 +24,6 @@
     ],
     "minimum-stability": "dev",
     "extra": {
-        "class": "FlexPlugin"
+        "class": "Yceruto\\BundleFlex\\FlexPlugin"
     }
 }
