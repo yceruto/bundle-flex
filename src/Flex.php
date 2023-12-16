@@ -2,22 +2,17 @@
 
 namespace Yceruto\BundleFlex;
 
-use Composer\Command\RemoveCommand;
 use Composer\Composer;
-use Composer\Console\Application;
 use Composer\EventDispatcher\Event;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
 use Yceruto\BundleFlex\Maker\FlexMaker;
 
 class Flex implements PluginInterface, EventSubscriberInterface
 {
     private FlexMaker $maker;
-    private Composer $composer;
     private IOInterface $io;
 
     public static function getSubscribedEvents(): array
@@ -30,7 +25,6 @@ class Flex implements PluginInterface, EventSubscriberInterface
     public function activate(Composer $composer, IOInterface $io): void
     {
         $this->maker = new FlexMaker($io);
-        $this->composer = $composer;
         $this->io = $io;
     }
 
@@ -47,17 +41,8 @@ class Flex implements PluginInterface, EventSubscriberInterface
     public function onPostCreateProject(Event $event): void
     {
         $this->maker->make();
-        $this->removePlugin();
         $this->removeSkeletonFiles();
         $this->writeSuccessMessage();
-    }
-
-    private function removePlugin(): void
-    {
-        $command = new RemoveCommand();
-        $command->setApplication(new Application());
-        $command->setComposer($this->composer);
-        $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex'], '--dev' => null]), new NullOutput());
     }
 
     private function removeSkeletonFiles(): void
