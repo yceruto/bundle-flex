@@ -1,6 +1,6 @@
 # Bundle Flex
 
-Composer plugin for Symfony bundles.
+Composer plugin for [Symfony Bundle Skeleton](https://github.com/yceruto/bundle-skeleton).
 
 ## License
 
