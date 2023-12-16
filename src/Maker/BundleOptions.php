@@ -20,12 +20,12 @@ class BundleOptions
     public bool $hasConfig = false;
 
     /**
-     * Will the bundle contain web assets?
+     * Will the bundle contain Web assets?
      */
     public bool $hasWebAssets = false;
 
     /**
-     * Will the bundle contain twig templates?
+     * Will the bundle contain Twig templates?
      */
     public bool $hasTwigTemplates = false;
 

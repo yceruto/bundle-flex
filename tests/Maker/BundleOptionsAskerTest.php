@@ -18,8 +18,8 @@ class BundleOptionsAskerTest extends TestCase
         ]);
         $io->method('askConfirmation')->willReturnMap([
             ['Will the bundle contain a config definition? (n): ', false, true],
-            ['Will the bundle contain web assets? (n): ', false, true],
-            ['Will the bundle contain twig templates? (n): ', false, true],
+            ['Will the bundle contain Web assets? (n): ', false, true],
+            ['Will the bundle contain Twig templates? (n): ', false, true],
             ['Will the bundle contain translations? (n): ', false, true],
         ]);
 
