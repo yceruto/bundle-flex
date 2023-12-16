@@ -21,7 +21,7 @@ abstract class MakerTestCase extends TestCase
     protected function tearDown(): void
     {
         if (is_dir($this->bundleDir)) {
-            rmdir($this->bundleDir);
+            $this->rmdir($this->bundleDir);
         }
     }
 
@@ -32,5 +32,29 @@ abstract class MakerTestCase extends TestCase
         }
 
         self::assertFileEquals($this->expectedDir.'/'.$relativePath.'.expected', $this->bundleDir.'/'.$relativePath);
+    }
+
+    private function rmdir($dir): bool
+    {
+        if (!file_exists($dir)) {
+            return true;
+        }
+
+        if (!is_dir($dir)) {
+            return unlink($dir);
+        }
+
+        foreach (scandir($dir) as $item) {
+            if ('.' === $item || '..' === $item) {
+                continue;
+            }
+
+            if (!$this->rmdir($dir . DIRECTORY_SEPARATOR . $item)) {
+                return false;
+            }
+
+        }
+
+        return rmdir($dir);
     }
 }

@@ -19,7 +19,7 @@ class BundleReadmeMaker
             $readme,
         );
 
-        if (!file_put_contents($this->bundleDir.'/README.md', $readme)) {
+        if (!is_dir($this->bundleDir) || !file_put_contents($this->bundleDir.'/README.md', $readme)) {
             throw new \RuntimeException('Unable to create README.md file.');
         }
     }
