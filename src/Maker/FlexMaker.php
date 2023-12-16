@@ -3,7 +3,7 @@
 namespace Yceruto\BundleFlex\Maker;
 
 use Composer\IO\IOInterface;
-use Yceruto\BundleFlex\Template\TemplateCloner;
+use Yceruto\BundleFlex\Template\TemplateFileCreator;
 
 class FlexMaker
 {
@@ -18,7 +18,7 @@ class FlexMaker
         $this->bundleOptionsAsker = new BundleOptionsAsker($io);
         $this->bundleComposerJsonMaker = new BundleComposerJsonMaker($bundleDir);
         $this->bundleDirectoryMaker = new BundleDirectoryMaker($bundleDir);
-        $this->bundleFileMaker = new BundleFileMaker(new TemplateCloner($bundleDir));
+        $this->bundleFileMaker = new BundleFileMaker(new TemplateFileCreator($bundleDir));
         $this->bundleMaker = new BundleMaker($bundleDir);
     }
 

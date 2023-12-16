@@ -5,13 +5,13 @@ namespace Yceruto\BundleFlex\Tests\Maker;
 use Yceruto\BundleFlex\Maker\BundleDirectoryMaker;
 use Yceruto\BundleFlex\Maker\BundleFileMaker;
 use Yceruto\BundleFlex\Maker\BundleOptions;
-use Yceruto\BundleFlex\Template\TemplateCloner;
+use Yceruto\BundleFlex\Template\TemplateFileCreator;
 
 class BundleFileMakerTest extends MakerTestCase
 {
     public function testCreateBundleFilesWithCorrectContent(): void
     {
-        $maker = new BundleFileMaker(new TemplateCloner($this->bundleDir));
+        $maker = new BundleFileMaker(new TemplateFileCreator($this->bundleDir));
         $options = new BundleOptions();
         $options->name = 'acme/acme-bundle';
         $options->hasConfig = true;
@@ -27,7 +27,7 @@ class BundleFileMakerTest extends MakerTestCase
 
     public function testThrowsExceptionWhenUnableToCreateReadmeFile(): void
     {
-        $maker = new BundleFileMaker(new TemplateCloner('/invalid/path/to/bundle'));
+        $maker = new BundleFileMaker(new TemplateFileCreator('/invalid/path/to/bundle'));
         $options = new BundleOptions();
         $options->name = 'acme/acme-bundle';
 
