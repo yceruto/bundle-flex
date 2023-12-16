@@ -1,6 +1,6 @@
 <?php
 
-namespace Yceruto\BundleFlex;
+namespace Yceruto\BundleFlex\Utils;
 
 class Inflector
 {

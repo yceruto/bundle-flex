@@ -3,24 +3,23 @@
 namespace Yceruto\BundleFlex\Maker;
 
 use Composer\IO\IOInterface;
+use Yceruto\BundleFlex\Template\TemplateCloner;
 
 class FlexMaker
 {
     private readonly BundleOptionsAsker $bundleOptionsAsker;
     private readonly BundleComposerJsonMaker $bundleComposerJsonMaker;
-    private readonly BundleReadmeMaker $bundleReadmeMaker;
     private readonly BundleDirectoryMaker $bundleDirectoryMaker;
+    private readonly BundleFileMaker $bundleFileMaker;
     private readonly BundleMaker $bundleMaker;
-    private readonly BundleConfigMaker $bundleConfigMaker;
 
     public function __construct(IOInterface $io, string $bundleDir)
     {
         $this->bundleOptionsAsker = new BundleOptionsAsker($io);
         $this->bundleComposerJsonMaker = new BundleComposerJsonMaker($bundleDir);
-        $this->bundleReadmeMaker = new BundleReadmeMaker($bundleDir);
         $this->bundleDirectoryMaker = new BundleDirectoryMaker($bundleDir);
+        $this->bundleFileMaker = new BundleFileMaker(new TemplateCloner($bundleDir));
         $this->bundleMaker = new BundleMaker($bundleDir);
-        $this->bundleConfigMaker = new BundleConfigMaker($bundleDir);
     }
 
     public function make(): void
@@ -28,9 +27,8 @@ class FlexMaker
         $options = $this->bundleOptionsAsker->ask();
 
         $this->bundleComposerJsonMaker->make($options);
-        $this->bundleReadmeMaker->make($options);
         $this->bundleDirectoryMaker->make($options);
+        $this->bundleFileMaker->make($options);
         $this->bundleMaker->make($options);
-        $this->bundleConfigMaker->make($options);
     }
 }

@@ -3,7 +3,7 @@
 namespace Yceruto\BundleFlex\Maker;
 
 use Composer\Json\JsonManipulator;
-use Yceruto\BundleFlex\Inflector;
+use Yceruto\BundleFlex\Utils\Inflector;
 
 class BundleComposerJsonMaker
 {

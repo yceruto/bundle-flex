@@ -11,6 +11,7 @@ class BundleDirectoryMaker
     public function make(BundleOptions $options): void
     {
         $this->makeDirectory('config');
+        $this->makeDirectory('docs');
         $this->makeDirectory('src');
         $this->makeDirectory('tests');
 

@@ -4,7 +4,7 @@ namespace Yceruto\BundleFlex\Maker;
 
 use PhpParser\BuilderFactory;
 use PhpParser\PrettyPrinter\Standard;
-use Yceruto\BundleFlex\Inflector;
+use Yceruto\BundleFlex\Utils\Inflector;
 
 class BundleMaker
 {
