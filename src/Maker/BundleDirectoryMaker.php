@@ -24,7 +24,7 @@ class BundleDirectoryMaker
         }
 
         if ($options->hasTranslations) {
-            $this->makeDirectory('translation');
+            $this->makeDirectory('translations');
         }
     }
 

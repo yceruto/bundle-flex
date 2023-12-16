@@ -61,6 +61,6 @@ class BundleDirectoryMakerTest extends MakerTestCase
 
         $maker->make($options);
 
-        $this->assertDirectoryExists($this->bundleDir.'/translation');
+        $this->assertDirectoryExists($this->bundleDir.'/translations');
     }
 }
