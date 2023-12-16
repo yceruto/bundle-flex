@@ -20,10 +20,6 @@ class BundleDirectoryMaker
             $this->makeDirectory('public');
         }
 
-        if ($options->hasConfig) {
-            $this->makeDirectory('config');
-        }
-
         if ($options->hasTwigTemplates) {
             $this->makeDirectory('templates');
         }
