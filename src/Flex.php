@@ -57,7 +57,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $command = new RemoveCommand();
         $command->setApplication(new Application());
         $command->setComposer($this->composer);
-        $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex'], '--dev']), new NullOutput());
+        $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex'], '--dev' => null]), new NullOutput());
     }
 
     private function removeSkeletonFiles(): void
