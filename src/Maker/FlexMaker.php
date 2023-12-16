@@ -6,19 +6,21 @@ use Composer\IO\IOInterface;
 
 class FlexMaker
 {
+    private readonly BundleOptionsAsker $bundleOptionsAsker;
+    private readonly BundleComposerJsonMaker $bundleComposerJsonMaker;
+    private readonly BundleReadmeMaker $bundleReadmeMaker;
+    private readonly BundleDirectoryMaker $bundleDirectoryMaker;
     private readonly BundleMaker $bundleMaker;
     private readonly BundleConfigMaker $bundleConfigMaker;
-    private readonly BundleComposerJsonMaker $bundleComposerJsonMaker;
-    private readonly BundleOptionsAsker $bundleOptionsAsker;
-    private readonly BundleReadmeMaker $bundleReadmeMaker;
 
     public function __construct(IOInterface $io, string $bundleDir)
     {
+        $this->bundleOptionsAsker = new BundleOptionsAsker($io);
+        $this->bundleComposerJsonMaker = new BundleComposerJsonMaker($bundleDir);
+        $this->bundleReadmeMaker = new BundleReadmeMaker($bundleDir);
+        $this->bundleDirectoryMaker = new BundleDirectoryMaker($bundleDir);
         $this->bundleMaker = new BundleMaker($bundleDir);
         $this->bundleConfigMaker = new BundleConfigMaker($bundleDir);
-        $this->bundleComposerJsonMaker = new BundleComposerJsonMaker($bundleDir);
-        $this->bundleOptionsAsker = new BundleOptionsAsker($io);
-        $this->bundleReadmeMaker = new BundleReadmeMaker($bundleDir);
     }
 
     public function make(): void
@@ -27,6 +29,7 @@ class FlexMaker
 
         $this->bundleComposerJsonMaker->make($options);
         $this->bundleReadmeMaker->make($options);
+        $this->bundleDirectoryMaker->make($options);
         $this->bundleMaker->make($options);
         $this->bundleConfigMaker->make($options);
     }
