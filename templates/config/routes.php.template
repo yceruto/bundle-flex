@@ -1,0 +1,12 @@
+<?php
+
+use <bundle-namespace>\Controller\DefaultController;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+
+return static function (RoutingConfigurator $routes): void {
+    $routes
+        ->add('<vendor>_default_controller', '/')
+            ->controller(DefaultController::class)
+            ->methods(['GET'])
+    ;
+};

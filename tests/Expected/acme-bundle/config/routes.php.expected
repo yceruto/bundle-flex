@@ -1,0 +1,12 @@
+<?php
+
+use Acme\AcmeBundle\Controller\DefaultController;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+
+return static function (RoutingConfigurator $routes): void {
+    $routes
+        ->add('acme_default_controller', '/')
+            ->controller(DefaultController::class)
+            ->methods(['GET'])
+    ;
+};

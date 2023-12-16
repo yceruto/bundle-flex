@@ -33,4 +33,9 @@ class BundleOptions
      * Will the bundle contain translations?
      */
     public bool $hasTranslations = false;
+
+    /**
+     * Will the bundle contain controllers?
+     */
+    public bool $hasControllers = false;
 }

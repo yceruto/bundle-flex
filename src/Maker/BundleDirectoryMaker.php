@@ -27,6 +27,10 @@ class BundleDirectoryMaker
         if ($options->hasTranslations) {
             $this->makeDirectory('translations');
         }
+
+        if ($options->hasControllers) {
+            $this->makeDirectory('src/Controller');
+        }
     }
 
     private function makeDirectory(string $name): void

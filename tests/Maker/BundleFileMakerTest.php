@@ -15,13 +15,16 @@ class BundleFileMakerTest extends MakerTestCase
         $options = new BundleOptions();
         $options->name = 'acme/acme-bundle';
         $options->hasConfig = true;
+        $options->hasControllers = true;
 
         (new BundleDirectoryMaker($this->bundleDir))->make($options);
         $maker->make($options);
 
-        $this->assertGenFile('docs/index.md');
+        $this->assertGenFile('config/routes.php');
         $this->assertGenFile('config/definition.php');
         $this->assertGenFile('config/services.php');
+        $this->assertGenFile('docs/index.md');
+        $this->assertGenFile('src/Controller/DefaultController.php');
         $this->assertGenFile('README.md');
     }
 

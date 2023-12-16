@@ -7,27 +7,39 @@ use Yceruto\BundleFlex\Utils\Inflector;
 
 class BundleFileMaker
 {
-    public function __construct(private readonly TemplateFileCreator $templateFileCreator)
+    public function __construct(private readonly TemplateFileCreator $fileCreator)
     {
     }
 
     public function make(BundleOptions $options): void
     {
-        $this->templateFileCreator->create('README.md.template', [
+        $this->fileCreator->create('README.md', [
             'package-name' => $options->name,
             'bundle-class' => Inflector::namespacefy($options->name).'\\'.Inflector::className($options->name),
         ]);
 
-        $this->templateFileCreator->create('docs/index.md.template', [
+        $this->fileCreator->create('docs/index.md', [
             'bundle-name' => Inflector::className($options->name),
         ]);
 
         if ($options->hasConfig) {
-            $this->templateFileCreator->create('config/definition.php.template');
+            $this->fileCreator->create('config/definition.php');
         }
 
-        $this->templateFileCreator->create('config/services.php.template', [
+        $this->fileCreator->create('config/services.php', [
             'vendor' => Inflector::vendory($options->name),
         ]);
+
+        if ($options->hasControllers) {
+            $this->fileCreator->create('config/routes.php', [
+                'bundle-namespace' => Inflector::namespacefy($options->name),
+                'vendor' => Inflector::vendory($options->name),
+            ]);
+
+            $this->fileCreator->create('src/Controller/DefaultController.php', [
+                'bundle-namespace' => Inflector::namespacefy($options->name),
+                'bundle-name' => Inflector::className($options->name),
+            ]);
+        }
     }
 }

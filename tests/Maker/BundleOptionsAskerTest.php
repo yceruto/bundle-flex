@@ -21,6 +21,7 @@ class BundleOptionsAskerTest extends TestCase
             ['Will the bundle contain Web assets? (n): ', false, true],
             ['Will the bundle contain Twig templates? (n): ', false, true],
             ['Will the bundle contain translations? (n): ', false, true],
+            ['Will the bundle contain controllers? (n): ', false, true],
         ]);
 
         $asker = new BundleOptionsAsker($io);
@@ -32,6 +33,7 @@ class BundleOptionsAskerTest extends TestCase
         self::assertTrue($options->hasWebAssets);
         self::assertTrue($options->hasTwigTemplates);
         self::assertTrue($options->hasTranslations);
+        self::assertTrue($options->hasControllers);
     }
 
     public function testHandleDefaultValuesCorrectly(): void
