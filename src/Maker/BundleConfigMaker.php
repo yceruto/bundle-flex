@@ -23,15 +23,15 @@ class BundleConfigMaker
 
     private function makeDefinitionFile(string $directory): void
     {
-        if (!copy(__DIR__.'/../../templates/definition.php.tpl', $directory.'/definition.php')) {
-            throw new \RuntimeException('Unable to copy definition.php.tpl file.');
+        if (!copy(__DIR__.'/../../templates/definition.php.template', $directory.'/definition.php')) {
+            throw new \RuntimeException('Unable to copy definition.php file.');
         }
     }
 
     private function makeServiceFile(string $directory): void
     {
-        if (!copy(__DIR__.'/../../templates/services.php.tpl', $directory.'/services.php')) {
-            throw new \RuntimeException('Unable to copy services.php.tpl file.');
+        if (!copy(__DIR__.'/../../templates/services.php.template', $directory.'/services.php')) {
+            throw new \RuntimeException('Unable to copy services.php file.');
         }
     }
 }
