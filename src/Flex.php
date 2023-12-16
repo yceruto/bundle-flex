@@ -5,6 +5,7 @@ namespace Yceruto\BundleFlex;
 use Composer\Composer;
 use Composer\EventDispatcher\Event;
 use Composer\EventDispatcher\EventSubscriberInterface;
+use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
@@ -24,7 +25,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $this->maker = new FlexMaker($io);
+        $this->maker = new FlexMaker($io, \dirname(Factory::getComposerFile()));
         $this->io = $io;
     }
 
@@ -40,8 +41,8 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function onPostCreateProject(Event $event): void
     {
-        $this->maker->make();
         $this->removeSkeletonFiles();
+        $this->maker->make();
         $this->writeSuccessMessage();
     }
 

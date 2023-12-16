@@ -6,28 +6,25 @@ use Composer\IO\IOInterface;
 
 class FlexMaker
 {
-    private BundleMaker $bundleMaker;
-    private BundleConfigMaker $bundleConfigMaker;
-    private BundleComposerJsonMaker $composerJsonMaker;
-    private IOInterface $io;
+    private readonly BundleMaker $bundleMaker;
+    private readonly BundleConfigMaker $bundleConfigMaker;
+    private readonly BundleComposerJsonMaker $bundleComposerJsonMaker;
+    private readonly BundleOptionsAsker $bundleOptionsAsker;
 
-    public function __construct(IOInterface $io)
+    public function __construct(IOInterface $io, string $bundleDir)
     {
-        $this->bundleMaker = new BundleMaker();
-        $this->bundleConfigMaker = new BundleConfigMaker();
-        $this->composerJsonMaker = new BundleComposerJsonMaker();
-        $this->io = $io;
+        $this->bundleMaker = new BundleMaker($bundleDir);
+        $this->bundleConfigMaker = new BundleConfigMaker($bundleDir);
+        $this->bundleComposerJsonMaker = new BundleComposerJsonMaker($bundleDir);
+        $this->bundleOptionsAsker = new BundleOptionsAsker($io);
     }
 
     public function make(): void
     {
-        $this->io->write(' ');
-        $name = $this->io->ask('Composer package name (e.g. vendor/name-bundle): ', 'acme/acme-bundle');
-        $description = $this->io->ask('Composer package description: ', 'Acme bundle description');
-        $hasDefinition = $this->io->askConfirmation('Will the bundle contain a config definition? (y,n): ');
+        $options = $this->bundleOptionsAsker->ask();
 
-        $this->composerJsonMaker->make($name, $description);
-        $this->bundleMaker->make($name, $hasDefinition);
-        $this->bundleConfigMaker->make($hasDefinition);
+        $this->bundleComposerJsonMaker->make($options);
+        $this->bundleMaker->make($options);
+        $this->bundleConfigMaker->make($options);
     }
 }

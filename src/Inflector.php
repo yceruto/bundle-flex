@@ -27,4 +27,16 @@ class Inflector
     {
         return self::classify(substr($name, strrpos($name, '/') + 1));
     }
+
+    /**
+     * Converts 'acme/acme-bundle' to 'acme' or `acme-bundle` to `acme`.
+     */
+    public static function vendory(string $name): string
+    {
+        if (str_contains($name, '/')) {
+            return strtolower(substr($name, 0, strpos($name, '/')));
+        }
+
+        return strtolower(substr($name, 0, strpos($name, '-')));
+    }
 }

@@ -2,36 +2,43 @@
 
 namespace Yceruto\BundleFlex\Maker;
 
-use Composer\Factory;
+use Yceruto\BundleFlex\Inflector;
 
 class BundleConfigMaker
 {
-    public function make(bool $hasDefinition): void
+    public function __construct(private readonly string $bundleDir)
     {
-        $directory = \dirname(Factory::getComposerFile()).'/config';
+    }
+
+    public function make(BundleOptions $options): void
+    {
+        $directory = $this->bundleDir.'/config';
 
         if (!is_dir($directory) && !mkdir($directory) && !is_dir($directory)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created.', $directory));
         }
 
-        if ($hasDefinition) {
+        if ($options->hasConfig) {
             $this->makeDefinitionFile($directory);
         }
 
-        $this->makeServiceFile($directory);
+        $this->makeServiceFile($options, $directory);
     }
 
     private function makeDefinitionFile(string $directory): void
     {
-        if (!copy(__DIR__.'/../../templates/definition.php.template', $directory.'/definition.php')) {
+        if (!copy(__DIR__.'/../../templates/config/definition.php.template', $directory.'/definition.php')) {
             throw new \RuntimeException('Unable to copy definition.php file.');
         }
     }
 
-    private function makeServiceFile(string $directory): void
+    private function makeServiceFile(BundleOptions $options, string $directory): void
     {
-        if (!copy(__DIR__.'/../../templates/services.php.template', $directory.'/services.php')) {
-            throw new \RuntimeException('Unable to copy services.php file.');
+        $servicesContent = file_get_contents(__DIR__.'/../../templates/config/services.php.template');
+        $servicesContent = str_replace('<vendor>', Inflector::vendory($options->name), $servicesContent);
+
+        if (!file_put_contents($directory.'/services.php', $servicesContent)) {
+            throw new \RuntimeException('Unable to create services.php file.');
         }
     }
 }

@@ -2,27 +2,32 @@
     "name": "yceruto/bundle-flex",
     "description": "Composer plugin for Symfony bundles",
     "type": "composer-plugin",
-    "require": {
-        "composer-plugin-api": "^2.3",
-        "nikic/php-parser": "^4.17"
-    },
-    "require-dev": {
-        "php": ">=8.1",
-        "composer/composer": "^2.7"
-    },
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Yceruto\\BundleFlex\\": "src/"
-        }
-    },
     "authors": [
         {
             "name": "Yonel Ceruto",
             "email": "yonelceruto@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.1",
+        "composer-plugin-api": "^2.3",
+        "nikic/php-parser": "^4.17"
+    },
+    "require-dev": {
+        "composer/composer": "^2.6",
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yceruto\\BundleFlex\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Yceruto\\BundleFlex\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "class": "Yceruto\\BundleFlex\\Flex"
     }

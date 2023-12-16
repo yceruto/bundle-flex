@@ -2,23 +2,26 @@
 
 namespace Yceruto\BundleFlex\Maker;
 
-use Composer\Factory;
 use PhpParser\BuilderFactory;
 use PhpParser\PrettyPrinter\Standard;
 use Yceruto\BundleFlex\Inflector;
 
 class BundleMaker
 {
-    public function make(string $name, bool $hasDefinition = false): void
+    public function __construct(private readonly string $bundleDir)
     {
-        $directory = \dirname(Factory::getComposerFile()).'/src';
+    }
+
+    public function make(BundleOptions $options): void
+    {
+        $directory = $this->bundleDir.'/src';
 
         if (!is_dir($directory) && !mkdir($directory) && !is_dir($directory)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created.', $directory));
         }
 
-        $namespace = Inflector::namespacefy($name);
-        $className = Inflector::className($name);
+        $namespace = Inflector::namespacefy($options->name);
+        $className = Inflector::className($options->name);
 
         $factory = new BuilderFactory();
         $fileAst = $factory->namespace($namespace);
@@ -31,7 +34,7 @@ class BundleMaker
 EOF
         );
 
-        if ($hasDefinition) {
+        if ($options->hasConfig) {
             $fileAst->addStmt($factory->use('Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator'));
 
             $classAst->addStmt(
@@ -54,7 +57,7 @@ EOF
             ->addStmt($factory->methodCall($factory->var('container'), 'import', ['../config/services.php']))
         ;
 
-        if ($hasDefinition) {
+        if ($options->hasConfig) {
             $loadExtensionMethodAst->setDocComment("\r");
         }
 
