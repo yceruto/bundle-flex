@@ -14,6 +14,7 @@ class BundleFileMaker
     public function make(BundleOptions $options): void
     {
         $this->fileCreator->create('README.md', [
+            'bundle-name' => Inflector::className($options->name),
             'package-name' => $options->name,
             'bundle-class' => Inflector::namespacefy($options->name).'\\'.Inflector::className($options->name),
         ]);
