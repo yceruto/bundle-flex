@@ -12,8 +12,10 @@ class BundleDirectoryMakerTest extends MakerTestCase
         $maker = new BundleDirectoryMaker($this->bundleDir);
         $maker->make(new BundleOptions());
 
+        $this->assertFileExists($this->bundleDir.'/config');
+        $this->assertFileExists($this->bundleDir.'/src');
+        $this->assertFileExists($this->bundleDir.'/tests');
         $this->assertFileDoesNotExist($this->bundleDir.'/assets');
-        $this->assertFileDoesNotExist($this->bundleDir.'/config');
         $this->assertFileDoesNotExist($this->bundleDir.'/public');
         $this->assertFileDoesNotExist($this->bundleDir.'/templates');
         $this->assertFileDoesNotExist($this->bundleDir.'/translation');

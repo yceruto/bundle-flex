@@ -10,6 +10,10 @@ class BundleDirectoryMaker
 
     public function make(BundleOptions $options): void
     {
+        $this->makeDirectory('config');
+        $this->makeDirectory('src');
+        $this->makeDirectory('tests');
+
         if ($options->hasWebAssets) {
             $this->makeDirectory('assets');
             $this->makeDirectory('public');
