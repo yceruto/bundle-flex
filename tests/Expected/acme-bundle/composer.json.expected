@@ -1,0 +1,14 @@
+{
+    "name": "acme/acme-bundle",
+    "description": "Acme bundle description",
+    "autoload": {
+        "psr-4": {
+            "Acme\\AcmeBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Acme\\AcmeBundle\\Tests\\": "tests/"
+        }
+    }
+}
