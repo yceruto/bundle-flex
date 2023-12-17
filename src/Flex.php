@@ -30,7 +30,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $this->maker = new FlexMaker($io, \dirname(Factory::getComposerFile()));
+        $this->maker = new FlexMaker($composer, $io, \dirname(Factory::getComposerFile()));
         $this->composer = $composer;
         $this->io = $io;
     }
