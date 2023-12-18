@@ -41,7 +41,7 @@ class CommandRunner
         $input = new ArrayInput(['packages' => (array) $packages]);
 
         if ($dev) {
-            $input->setOption('--dev', true);
+            $input->setOption('dev', true);
         }
 
         return $command->run($input, $this->output);
