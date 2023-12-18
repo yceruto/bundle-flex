@@ -38,12 +38,11 @@ class CommandRunner
         $command->setComposer($this->composer);
         $command->setApplication($this->application);
 
-        $input = new ArrayInput(['packages' => (array) $packages]);
-
+        $input = ['packages' => (array) $packages];
         if ($dev) {
-            $input->setOption('dev', true);
+            $input['--dev'] = true;
         }
 
-        return $command->run($input, $this->output);
+        return $command->run(new ArrayInput($input), $this->output);
     }
 }
