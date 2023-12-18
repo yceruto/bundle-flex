@@ -31,6 +31,7 @@ class BundleDirectoryMaker
 
         if ($options->hasTranslations) {
             $this->makeDirectory('translations');
+            $this->commandRunner->require('symfony/translation');
         }
 
         if ($options->hasControllers) {
