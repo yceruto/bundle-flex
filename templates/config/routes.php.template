@@ -1,12 +1,15 @@
 <?php
 
-use <bundle-namespace>\Controller\DefaultController;
+use <bundle-namespace>\Controller\HelloController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
+/**
+ * @link https://symfony.com/doc/current/bundles/best_practices.html#routing
+ */
 return static function (RoutingConfigurator $routes): void {
     $routes
-        ->add('<vendor>_default_controller', '/')
-            ->controller(DefaultController::class)
+        ->add('<vendor-prefix>_hello_controller', '/')
+            ->controller(HelloController::class)
             ->methods(['GET'])
     ;
 };

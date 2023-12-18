@@ -8,10 +8,10 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $container): void {
     $container
         ->parameters()
-            // ->set('<vendor>.param_name', 'param_value');
+            // ->set('<vendor-prefix>.param_name', 'param_value');
     ;
     $container
         ->services()
-            // ->set('<vendor>.service_name', 'service_class')
+            // ->set('<vendor-prefix>.service_name', 'service_class')
     ;
 };

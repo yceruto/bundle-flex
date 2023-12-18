@@ -5,7 +5,7 @@ namespace <bundle-namespace>\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController
+class HelloController
 {
     public function __invoke(Request $request): Response
     {

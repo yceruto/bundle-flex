@@ -16,6 +16,9 @@ class BundleFileMakerTest extends MakerTestCase
         $options = new BundleOptions();
         $options->name = 'acme/acme-bundle';
         $options->hasConfig = true;
+        $options->hasWebAssets = true;
+        $options->hasTwigTemplates = true;
+        $options->hasTranslations = true;
         $options->hasControllers = true;
 
         $commandRunner = $this->createMock(CommandRunner::class);
@@ -24,11 +27,15 @@ class BundleFileMakerTest extends MakerTestCase
 
         $maker->make($options);
 
+        $this->assertGenFile('assets/acme-bundle.js');
         $this->assertGenFile('config/routes.php');
         $this->assertGenFile('config/definition.php');
+        $this->assertGenFile('public/acme-bundle.min.js');
         $this->assertGenFile('config/services.php');
         $this->assertGenFile('docs/index.md');
-        $this->assertGenFile('src/Controller/DefaultController.php');
+        $this->assertGenFile('src/Controller/HelloController.php');
+        $this->assertGenFile('templates/hello.html.twig');
+        $this->assertGenFile('translations/AcmeBundle.fr.xlf');
         $this->assertGenFile('README.md');
     }
 

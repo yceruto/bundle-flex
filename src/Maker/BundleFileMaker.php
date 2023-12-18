@@ -19,27 +19,49 @@ class BundleFileMaker
             'bundle-class' => Inflector::namespacefy($options->name).'\\'.Inflector::className($options->name),
         ]);
 
-        $this->fileCreator->create('docs/index.md', [
-            'bundle-name' => Inflector::className($options->name),
-        ]);
+        if ($options->hasWebAssets) {
+            $this->fileCreator->create('assets/acme-bundle.js', [
+                'bundle-name' => Inflector::className($options->name),
+            ], 'assets/'.Inflector::fileName($options->name, 'js'));
+
+            $this->fileCreator->create('public/acme-bundle.min.js', [
+                'bundle-name' => Inflector::className($options->name),
+            ], 'public/'.Inflector::fileName($options->name, 'min.js'));
+        }
 
         if ($options->hasConfig) {
             $this->fileCreator->create('config/definition.php');
         }
 
         $this->fileCreator->create('config/services.php', [
-            'vendor' => Inflector::vendory($options->name),
+            'vendor-prefix' => Inflector::vendory($options->name),
+        ]);
+
+        $this->fileCreator->create('docs/index.md', [
+            'bundle-name' => Inflector::className($options->name),
         ]);
 
         if ($options->hasControllers) {
             $this->fileCreator->create('config/routes.php', [
                 'bundle-namespace' => Inflector::namespacefy($options->name),
-                'vendor' => Inflector::vendory($options->name),
+                'vendor-prefix' => Inflector::vendory($options->name),
             ]);
 
-            $this->fileCreator->create('src/Controller/DefaultController.php', [
+            $this->fileCreator->create('src/Controller/HelloController.php', [
                 'bundle-namespace' => Inflector::namespacefy($options->name),
                 'bundle-name' => Inflector::className($options->name),
+            ]);
+        }
+
+        if ($options->hasTwigTemplates) {
+            $this->fileCreator->create('templates/hello.html.twig', [
+                'bundle-name' => Inflector::className($options->name),
+            ]);
+        }
+
+        if ($options->hasTranslations) {
+            $this->fileCreator->create('translations/AcmeBundle.fr.xlf', [
+                'vendor-prefix' => Inflector::vendory($options->name),
             ]);
         }
     }

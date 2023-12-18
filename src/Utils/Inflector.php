@@ -29,7 +29,7 @@ class Inflector
     }
 
     /**
-     * Converts 'acme/acme-bundle' to 'acme' or `acme-bundle` to `acme`.
+     * Converts 'acme/foo-bundle' to 'acme_foo' or `foo-bundle` to `foo`.
      */
     public static function vendory(string $name): string
     {
@@ -38,5 +38,10 @@ class Inflector
         }
 
         return strtolower(substr($name, 0, strpos($name, '-')));
+    }
+
+    public static function fileName(string $name, string $ext): string
+    {
+        return sprintf('%s.%s', strtolower(substr($name, strrpos($name, '/') + 1)), $ext);
     }
 }
