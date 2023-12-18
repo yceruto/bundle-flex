@@ -17,6 +17,7 @@ class BundleOptionsAsker
         $reflector = new \ReflectionClass($options);
 
         $this->io->write(' ');
+        $this->io->write('<info>Bundle Assistant</info>');
         foreach ($options as $name => $default) {
             $question = sprintf(
                 '%s (%s): ',
