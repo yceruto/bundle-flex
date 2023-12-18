@@ -22,10 +22,11 @@ class BundleFileMaker
         if ($options->hasWebAssets) {
             $this->fileCreator->create('assets/acme-bundle.js', [
                 'bundle-name' => Inflector::className($options->name),
-            ], sprintf('assets/%s.js', Inflector::fileName($options->name)));
+            ], $assetsFileName = sprintf('assets/%s.js', Inflector::fileName($options->name)));
 
             $this->fileCreator->create('public/acme-bundle.min.js', [
                 'bundle-name' => Inflector::className($options->name),
+                'bundle-file-name' => $assetsFileName,
             ], sprintf('public/%s.min.js', Inflector::fileName($options->name)));
         }
 
