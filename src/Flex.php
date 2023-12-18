@@ -2,23 +2,20 @@
 
 namespace Yceruto\BundleFlex;
 
-use Composer\Command\RemoveCommand;
 use Composer\Composer;
-use Composer\Console\Application;
 use Composer\EventDispatcher\Event;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Yceruto\BundleFlex\Composer\CommandRunner;
 use Yceruto\BundleFlex\Maker\FlexMaker;
 
 class Flex implements PluginInterface, EventSubscriberInterface
 {
+    private CommandRunner $commandRunner;
     private FlexMaker $maker;
-    private Composer $composer;
     private IOInterface $io;
 
     public static function getSubscribedEvents(): array
@@ -30,8 +27,8 @@ class Flex implements PluginInterface, EventSubscriberInterface
 
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $this->maker = new FlexMaker($composer, $io, \dirname(Factory::getComposerFile()));
-        $this->composer = $composer;
+        $this->commandRunner = new CommandRunner($composer);
+        $this->maker = new FlexMaker($this->commandRunner, $io, \dirname(Factory::getComposerFile()));
         $this->io = $io;
     }
 
@@ -49,7 +46,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
     {
         $this->removeSkeletonFiles();
         $this->maker->make();
-        $this->removeBundleFlexPlugin();
+        $this->commandRunner->remove('yceruto/bundle-flex', dev: true);
         $this->writeSuccessMessage();
     }
 
@@ -57,14 +54,6 @@ class Flex implements PluginInterface, EventSubscriberInterface
     {
         @unlink('LICENSE');
         @unlink('README.md');
-    }
-
-    private function removeBundleFlexPlugin(): void
-    {
-        $command = new RemoveCommand();
-        $command->setApplication(new Application());
-        $command->setComposer($this->composer);
-        $command->run(new ArrayInput(['packages' => ['yceruto/bundle-flex'], '--dev' => true]), new NullOutput());
     }
 
     private function writeSuccessMessage(): void

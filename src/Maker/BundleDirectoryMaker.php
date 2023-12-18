@@ -2,16 +2,12 @@
 
 namespace Yceruto\BundleFlex\Maker;
 
-use Composer\Command\RequireCommand;
-use Composer\Composer;
-use Composer\Console\Application;
-use Composer\Factory;
-use Symfony\Component\Console\Input\ArrayInput;
+use Yceruto\BundleFlex\Composer\CommandRunner;
 
 class BundleDirectoryMaker
 {
     public function __construct(
-        private readonly Composer $composer,
+        private readonly CommandRunner $commandRunner,
         private readonly string $bundleDir,
     ) {
     }
@@ -30,7 +26,7 @@ class BundleDirectoryMaker
 
         if ($options->hasTwigTemplates) {
             $this->makeDirectory('templates');
-            $this->requireTwigPackage();
+            $this->commandRunner->require('symfony/twig-bundle');
         }
 
         if ($options->hasTranslations) {
@@ -40,14 +36,6 @@ class BundleDirectoryMaker
         if ($options->hasControllers) {
             $this->makeDirectory('src/Controller');
         }
-    }
-
-    private function requireTwigPackage(): void
-    {
-        $command = new RequireCommand();
-        $command->setApplication(new Application());
-        $command->setComposer($this->composer);
-        $command->run(new ArrayInput(['packages' => ['symfony/twig-bundle']]), Factory::createOutput());
     }
 
     private function makeDirectory(string $name): void

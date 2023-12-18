@@ -2,6 +2,7 @@
 
 namespace Yceruto\BundleFlex\Tests\Maker;
 
+use Yceruto\BundleFlex\Composer\CommandRunner;
 use Yceruto\BundleFlex\Maker\BundleDirectoryMaker;
 use Yceruto\BundleFlex\Maker\BundleFileMaker;
 use Yceruto\BundleFlex\Maker\BundleOptions;
@@ -17,7 +18,10 @@ class BundleFileMakerTest extends MakerTestCase
         $options->hasConfig = true;
         $options->hasControllers = true;
 
-        (new BundleDirectoryMaker($this->bundleDir))->make($options);
+        $commandRunner = $this->createMock(CommandRunner::class);
+        $directoryMaker = new BundleDirectoryMaker($commandRunner, $this->bundleDir);
+        $directoryMaker->make($options);
+
         $maker->make($options);
 
         $this->assertGenFile('config/routes.php');

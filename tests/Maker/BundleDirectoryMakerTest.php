@@ -2,15 +2,24 @@
 
 namespace Yceruto\BundleFlex\Tests\Maker;
 
+use Composer\Composer;
+use Yceruto\BundleFlex\Composer\CommandRunner;
 use Yceruto\BundleFlex\Maker\BundleDirectoryMaker;
 use Yceruto\BundleFlex\Maker\BundleOptions;
 
 class BundleDirectoryMakerTest extends MakerTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $commandRunner = $this->createMock(CommandRunner::class);
+        $this->maker = new BundleDirectoryMaker($commandRunner, $this->bundleDir);
+    }
+
     public function testMakeDefault(): void
     {
-        $maker = new BundleDirectoryMaker($this->bundleDir);
-        $maker->make(new BundleOptions());
+        $this->maker->make(new BundleOptions());
 
         $this->assertFileExists($this->bundleDir.'/config');
         $this->assertFileExists($this->bundleDir.'/src');
@@ -23,11 +32,10 @@ class BundleDirectoryMakerTest extends MakerTestCase
 
     public function testMakeWebAssets(): void
     {
-        $maker = new BundleDirectoryMaker($this->bundleDir);
         $options = new BundleOptions();
         $options->hasWebAssets = true;
 
-        $maker->make($options);
+        $this->maker->make($options);
 
         $this->assertDirectoryExists($this->bundleDir.'/assets');
         $this->assertDirectoryExists($this->bundleDir.'/public');
@@ -35,33 +43,30 @@ class BundleDirectoryMakerTest extends MakerTestCase
 
     public function testMakeConfig(): void
     {
-        $maker = new BundleDirectoryMaker($this->bundleDir);
         $options = new BundleOptions();
         $options->hasConfig = true;
 
-        $maker->make($options);
+        $this->maker->make($options);
 
         $this->assertDirectoryExists($this->bundleDir.'/config');
     }
 
     public function testMakeTwigTemplates(): void
     {
-        $maker = new BundleDirectoryMaker($this->bundleDir);
         $options = new BundleOptions();
         $options->hasTwigTemplates = true;
 
-        $maker->make($options);
+        $this->maker->make($options);
 
         $this->assertDirectoryExists($this->bundleDir.'/templates');
     }
 
     public function testMakeTranslations(): void
     {
-        $maker = new BundleDirectoryMaker($this->bundleDir);
         $options = new BundleOptions();
         $options->hasTranslations = true;
 
-        $maker->make($options);
+        $this->maker->make($options);
 
         $this->assertDirectoryExists($this->bundleDir.'/translations');
     }

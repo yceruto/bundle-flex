@@ -4,9 +4,13 @@ namespace Yceruto\BundleFlex\Template;
 
 class TemplateRenderer
 {
+    public function __construct(private readonly string $baseDir = __DIR__.'/../../templates')
+    {
+    }
+
     public function render(string $template, array $parameters = []): string
     {
-        $filename = __DIR__.'/../../templates/'.$template;
+        $filename = $this->baseDir.'/'.$template;
 
         if (!file_exists($filename)) {
             throw new \InvalidArgumentException(sprintf('Template "%s" not found.', $template));
