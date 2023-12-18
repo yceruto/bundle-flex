@@ -22,11 +22,11 @@ class BundleFileMaker
         if ($options->hasWebAssets) {
             $this->fileCreator->create('assets/acme-bundle.js', [
                 'bundle-name' => Inflector::className($options->name),
-            ], 'assets/'.Inflector::fileName($options->name, 'js'));
+            ], sprintf('assets/%s.js', Inflector::fileName($options->name)));
 
             $this->fileCreator->create('public/acme-bundle.min.js', [
                 'bundle-name' => Inflector::className($options->name),
-            ], 'public/'.Inflector::fileName($options->name, 'min.js'));
+            ], sprintf('public/%s.min.js', Inflector::fileName($options->name)));
         }
 
         if ($options->hasConfig) {
@@ -62,7 +62,7 @@ class BundleFileMaker
         if ($options->hasTranslations) {
             $this->fileCreator->create('translations/AcmeBundle.fr.xlf', [
                 'vendor-prefix' => Inflector::vendory($options->name),
-            ]);
+            ], sprintf('translations/%s.fr.xlf', Inflector::className($options->name)));
         }
     }
 }

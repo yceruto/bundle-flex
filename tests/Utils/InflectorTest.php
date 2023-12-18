@@ -30,6 +30,6 @@ class InflectorTest extends TestCase
 
     public function testFileName(): void
     {
-        self::assertSame('acme-bundle.js', Inflector::fileName('acme/acme-bundle', 'js'));
+        self::assertSame('acme-bundle', Inflector::fileName('acme/acme-bundle'));
     }
 }

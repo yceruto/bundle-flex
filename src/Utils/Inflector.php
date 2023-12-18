@@ -40,8 +40,8 @@ class Inflector
         return strtolower(substr($name, 0, strpos($name, '-')));
     }
 
-    public static function fileName(string $name, string $ext): string
+    public static function fileName(string $name): string
     {
-        return sprintf('%s.%s', strtolower(substr($name, strrpos($name, '/') + 1)), $ext);
+        return strtolower(substr($name, strrpos($name, '/') + 1));
     }
 }
