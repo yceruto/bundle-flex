@@ -29,15 +29,15 @@ class Inflector
     }
 
     /**
-     * Converts 'acme/foo-bundle' to 'acme_foo' or `foo-bundle` to `foo`.
+     * Converts 'acme/foo-bundle' to 'acme_foo'.
      */
     public static function vendory(string $name): string
     {
-        if (str_contains($name, '/')) {
-            return strtolower(substr($name, 0, strpos($name, '/')));
+        if (!str_contains($name, '/')) {
+            return '';
         }
 
-        return strtolower(substr($name, 0, strpos($name, '-')));
+        return strtolower(str_replace('/', '_', substr($name, 0, strpos($name, '-'))));
     }
 
     public static function fileName(string $name): string

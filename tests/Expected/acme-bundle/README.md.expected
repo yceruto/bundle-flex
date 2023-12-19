@@ -1,4 +1,4 @@
-# AcmeBundle
+# FooBundle
 
 ## Installation
 
@@ -11,7 +11,7 @@ of the Composer documentation.
 Open a command console, enter your project directory and execute:
 
 ```console
-$ composer require acme/acme-bundle
+$ composer require acme/foo-bundle
 ```
 
 ### Applications that don't use Symfony Flex
@@ -22,7 +22,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```console
-$ composer require acme/acme-bundle
+$ composer require acme/foo-bundle
 ```
 
 #### Step 2: Enable the Bundle
@@ -35,6 +35,6 @@ in the `config/bundles.php` file of your project:
 
 return [
     // ...
-    Acme\AcmeBundle\AcmeBundle::class => ['all' => true],
+    Acme\FooBundle\FooBundle::class => ['all' => true],
 ];
 ```

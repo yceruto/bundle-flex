@@ -24,8 +24,7 @@ class InflectorTest extends TestCase
 
     public function testVendoryPackageName(): void
     {
-        self::assertSame('acme', Inflector::vendory('acme/acme-bundle'));
-        self::assertSame('acme', Inflector::vendory('acme-bundle'));
+        self::assertSame('acme_foo', Inflector::vendory('acme/foo-bundle'));
     }
 
     public function testFileName(): void

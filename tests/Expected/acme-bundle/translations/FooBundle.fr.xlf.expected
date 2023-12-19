@@ -2,7 +2,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="fr" datatype="plaintext" original="file.ext">
         <body>
-            <!-- <trans-unit id="acme_hello_world"> -->
+            <!-- <trans-unit id="acme_foo_hello_world"> -->
                 <!-- <source>Hello World</source> -->
                 <!-- <target>Bonjour le Monde</target> -->
             <!-- </trans-unit> -->

@@ -1,14 +1,14 @@
 {
-    "name": "acme/acme-bundle",
+    "name": "acme/foo-bundle",
     "description": "Acme bundle description",
     "autoload": {
         "psr-4": {
-            "Acme\\AcmeBundle\\": "src/"
+            "Acme\\FooBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Acme\\AcmeBundle\\Tests\\": "tests/"
+            "Acme\\FooBundle\\Tests\\": "tests/"
         }
     }
 }

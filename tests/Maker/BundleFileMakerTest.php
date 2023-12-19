@@ -14,7 +14,7 @@ class BundleFileMakerTest extends MakerTestCase
     {
         $maker = new BundleFileMaker(new TemplateFileCreator($this->bundleDir));
         $options = new BundleOptions();
-        $options->name = 'acme/acme-bundle';
+        $options->name = 'acme/foo-bundle';
         $options->hasConfig = true;
         $options->hasWebAssets = true;
         $options->hasTwigTemplates = true;
@@ -27,15 +27,15 @@ class BundleFileMakerTest extends MakerTestCase
 
         $maker->make($options);
 
-        $this->assertGenFile('assets/acme-bundle.js');
+        $this->assertGenFile('assets/foo-bundle.js');
         $this->assertGenFile('config/routes.php');
         $this->assertGenFile('config/definition.php');
-        $this->assertGenFile('public/acme-bundle.min.js');
+        $this->assertGenFile('public/foo-bundle.min.js');
         $this->assertGenFile('config/services.php');
         $this->assertGenFile('docs/index.md');
         $this->assertGenFile('src/Controller/HelloController.php');
         $this->assertGenFile('templates/hello.html.twig');
-        $this->assertGenFile('translations/AcmeBundle.fr.xlf');
+        $this->assertGenFile('translations/FooBundle.fr.xlf');
         $this->assertGenFile('README.md');
     }
 
@@ -43,7 +43,7 @@ class BundleFileMakerTest extends MakerTestCase
     {
         $maker = new BundleFileMaker(new TemplateFileCreator('/invalid/path/to/bundle'));
         $options = new BundleOptions();
-        $options->name = 'acme/acme-bundle';
+        $options->name = 'acme/foo-bundle';
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Unable to create "/invalid/path/to/bundle/README.md" file.');

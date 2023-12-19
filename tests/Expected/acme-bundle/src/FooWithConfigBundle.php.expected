@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\AcmeWithConfigBundle;
+namespace Acme\FooWithConfigBundle;
 
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 /**
  * @link https://symfony.com/doc/current/bundles/best_practices.html
  */
-class AcmeWithConfigBundle extends AbstractBundle
+class FooWithConfigBundle extends AbstractBundle
 {
     public function configure(DefinitionConfigurator $definition) : void
     {

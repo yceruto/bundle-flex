@@ -1,6 +1,6 @@
 <?php
 
-use Acme\AcmeBundle\Controller\HelloController;
+use Acme\FooBundle\Controller\HelloController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 /**
@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
  */
 return static function (RoutingConfigurator $routes): void {
     $routes
-        ->add('acme_hello_controller', '/')
+        ->add('acme_foo_hello_controller', '/')
             ->controller(HelloController::class)
             ->methods(['GET'])
     ;

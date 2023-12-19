@@ -12,7 +12,7 @@ class BundleComposerJsonMakerTest extends MakerTestCase
         file_put_contents($this->bundleDir.'/composer.json', '{}');
         $maker = new BundleComposerJsonMaker($this->bundleDir);
         $options = new BundleOptions();
-        $options->name = 'acme/acme-bundle';
+        $options->name = 'acme/foo-bundle';
 
         $maker->make($options);
 
