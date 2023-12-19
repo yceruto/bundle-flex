@@ -4,12 +4,12 @@ Composer plugin for [Symfony Bundle Skeleton](https://github.com/yceruto/bundle-
 
 ## Features
 
- - [x] Update `composer.json` file with PSR-4 namespaces.
- - [x] Generate `README.md` file with basic installation instructions.
- - [x] Generate directory structure and boilerplate files.
- - [x] Generate bundle class with basic implementation.
+- [x] Update `composer.json` file with PSR-4 namespaces.
+- [x] Generate `README.md` file with basic installation instructions.
+- [x] Generate directory structure and boilerplate files.
+- [x] Generate bundle class with basic implementation.
 
-![Demo](demo.gif)
+<img src="demo.gif" alt="demo" width="400"/>
 
 ## License
 
