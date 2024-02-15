@@ -65,5 +65,7 @@ class BundleFileMaker
                 'vendor-prefix' => Inflector::vendory($options->name),
             ], sprintf('translations/%s.fr.xlf', Inflector::className($options->name)));
         }
+
+        $this->fileCreator->create('.gitattributes');
     }
 }
