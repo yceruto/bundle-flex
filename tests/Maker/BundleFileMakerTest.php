@@ -37,6 +37,7 @@ class BundleFileMakerTest extends MakerTestCase
         $this->assertGenFile('templates/hello.html.twig');
         $this->assertGenFile('translations/FooBundle.fr.xlf');
         $this->assertGenFile('README.md');
+        $this->assertGenFile('.gitattributes');
     }
 
     public function testThrowsExceptionWhenUnableToCreateReadmeFile(): void
