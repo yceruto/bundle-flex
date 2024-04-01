@@ -12,12 +12,12 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
  */
 class FooWithConfigBundle extends AbstractBundle
 {
-    public function configure(DefinitionConfigurator $definition) : void
+    public function configure(DefinitionConfigurator $definition): void
     {
         $definition->import('../config/definition.php');
     }
     
-    public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder) : void
+    public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $container->import('../config/services.php');
     }
