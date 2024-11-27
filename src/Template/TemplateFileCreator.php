@@ -10,7 +10,7 @@ class TemplateFileCreator
     ) {
     }
 
-    public function create(string $name, array $parameters = [], string $destName = null): void
+    public function create(string $name, array $parameters = [], ?string $destName = null): void
     {
         $content = $this->renderer->render($name.'.template', $parameters);
         $destination = $this->bundleDir.'/'.($destName ?? $name);
