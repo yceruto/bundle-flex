@@ -3,9 +3,11 @@
 namespace Yceruto\BundleFlex\Tests\Maker;
 
 use PHPUnit\Framework\TestCase;
+use Yceruto\BundleFlex\Maker\BundleDirectoryMaker;
 
 abstract class MakerTestCase extends TestCase
 {
+    protected BundleDirectoryMaker $maker;
     protected string $bundleDir;
     protected string $expectedDir;
 

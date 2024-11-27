@@ -18,7 +18,7 @@ class CommandRunner
     public function __construct(
         private readonly Composer $composer,
         private readonly Application $application = new Application(),
-        OutputInterface $output = null,
+        ?OutputInterface $output = null,
     ) {
         $this->output = $output ?? Factory::createOutput();
     }
